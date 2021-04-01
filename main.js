@@ -95,7 +95,7 @@ client.on('ready',() =>{
 
         switch(argss)
         {
-          case "help":
+          /*case "help":
 
         try {
             message.reply("Please check your direct messages :inbox_tray:");
@@ -142,7 +142,7 @@ client.on('ready',() =>{
        catch(err) {
            message.channel.send('I could not send you my commands!');
        } 
-       break;
+       break;*/
      
        
        case 'purge':
@@ -339,7 +339,7 @@ var msg1 = Array(3);
 }
     break;
 
-case 'give':
+/*case 'give':
 
 if(!args[1])return message.channel.send('Please specify a user.');
 if (!args[2]) return message.channel.send('Please specify the amount of money you want to send.');
@@ -400,7 +400,7 @@ const target = await profileModel.findOne({ userID: giveUser.id});
 })
 
 
-break;
+break;*/
 
 case 'bal':
    case 'balance':
