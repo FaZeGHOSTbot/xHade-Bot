@@ -402,6 +402,35 @@ const target = await profileModel.findOne({ userID: giveUser.id});
 
 break;*/
 
+case 'poke':
+                  const pokeuser = message.mentions.users.first();
+          if(!pokeuser)
+              return message.reply('Mention someone to poke!');
+
+          superagent.get('https://nekos.life/api/v2/img/poke')
+              .end((err, response) => {
+            const pokeEmbed = new Discord.MessageEmbed()
+            .setTitle(pokeuser.username + " just got poked by " + message.author.username)
+            .setImage(response.body.url)
+            .setColor(`RANDOM`)
+            .setDescription((pokeuser.toString() + " got poked by " + message.author.toString()))
+            .setFooter(bot.user.username, bot.user.avatarURL())
+            .setTimestamp()
+            .setURL(response.body.url);
+        message.channel.send(pokeEmbed);
+          })
+          break;
+
+case 'say':
+  if(message.member.hasPermission("ADMINISTRATOR", explicit = true)){
+    
+    if(!args[1]) return message.channel.send("You need to say something")
+    message.delete()
+    let msgARGS = args.slice(1).join(" "); 
+    message.channel.send(msgARGS)
+  }
+  break;
+
 case 'bal':
    case 'balance':
       if(!args[1]){
