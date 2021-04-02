@@ -340,7 +340,7 @@ var msg1 = Array(3);
   const addUser = message.mentions.users.first();
   if (!addUser) return message.channel.send('That is not a valid user.');
   const AddAmount = parseInt(args[2])
-  if(isNaN(betAmount)) return message.channel.send("Please specify a correct amount to add.")
+  if(isNaN(AddAmount)) return message.channel.send("Please specify a correct amount to add.")
 
   let add = await profileModel.findOneAndUpdate({
     userID: addUser
