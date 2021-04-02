@@ -307,7 +307,7 @@ var msg1 = Array(3);
     } else{
       const randomNumberBet = Math.floor(Math.random()*500) + 1;
       if(randomNumberBet <= 250){
-      let gamble = await profileModel.findOneAndUpdate({
+      let gamble = profileModel.findOneAndUpdate({
         userID: message.author.id
     }, 
     {
@@ -325,7 +325,7 @@ var msg1 = Array(3);
   .setTimestamp()
   message.channel.send(BetEmbed);
   }else if(randomNumberBet > 250 && randomNumberBet < 500){
-    let gamble = await profileModel.findOneAndUpdate({
+    let gamble = profileModel.findOneAndUpdate({
       userID: message.author.id
   }, 
   {
@@ -343,7 +343,7 @@ var msg1 = Array(3);
   .setTimestamp()
   message.channel.send(BetEmbed);
   } else if(randomNumberBet === 500){
-    let gamble = await profileModel.findOneAndUpdate({
+    let gamble = profileModel.findOneAndUpdate({
       userID: message.author.id
   }, 
   {
