@@ -346,8 +346,8 @@ var msg1 = Array(3);
     return message.channel.send(BetFail);
   
    }else if((args[1])) {
-    const betAmount = args[1]
-    if(Number.isNaN(+betAmount)){
+     let betAmount = parseInt(args[1])
+    if(Number.isNaN(betAmount)){
       let BetFail = new Discord.MessageEmbed()
       .setAuthor(message.author.username, message.author.avatarURL())
       .setDescription(`**${args[1]}** is an incorrect bet amount.`)
@@ -376,7 +376,7 @@ var msg1 = Array(3);
         userID: message.author.id
     }, 
     {
-       $dec: {
+       $inc: {
           coins: -betAmount,
        },
     }
