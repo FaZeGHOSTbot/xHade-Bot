@@ -32,12 +32,18 @@ const randomPuppy = require("random-puppy");
 const booru = require('booru');
 const express = require("express");
 const { profile } = require('console');
+
+const mongoCurrency = require('discord-mongo-currency');
+ 
+mongoCurrency.connect('mongodb+srv://Lucifer:cenalm10@xhade.mtjd5.mongodb.net/Data');
+
 const timeoutBeg = 3600000;
 const timeoutWork = 3600000;
 const timeoutDaily = 86400000;
 const timeoutWeekly = 604800016;
 const timeoutMonthly = 2629800000;
 const timeoutPlay = 3600000;
+const timeoutBet = 5000;
 
 var fortunes = [
    "`Yes`",
@@ -272,6 +278,12 @@ var msg1 = Array(3);
 }
  break;
 
+ case 'lb':
+   case 'leaderboard':
+     case 'top':
+      
+     break;
+
  case 'play':
   const cooldownPlay = await db.fetch(`Play_${message.guild.id}_${message.author.id}`); 
   if (cooldownPlay !== null && timeoutPlay - (Date.now() - cooldownPlay) > 0) {
@@ -312,6 +324,18 @@ var msg1 = Array(3);
  case 'bet':
    case 'gamble':
 
+    const cooldownBet = await db.fetch(`Bet_${message.guild.id}_${message.author.id}`); 
+    if (cooldownBet !== null && timeoutBet - (Date.now() - cooldownBet) > 0) {
+     const timeBet = ms(timeoutBet - (Date.now() - cooldownBet));
+     let BetCD = new Discord.MessageEmbed()
+     .setAuthor(message.author.username, message.author.avatarURL())
+     .setTitle('Gamble Command Cooldown 🕒')
+     .setDescription(`You can go into illegal Gambling in **${timeBet}**! `)
+     .setColor(0xFF0000)  
+     .setFooter(client.user.username, client.user.displayAvatarURL())
+     .setTimestamp()
+   message.channel.send(BetCD);
+ } else {
    if(!args[1]) {
     let BetFail = new Discord.MessageEmbed()
     .setAuthor(message.author.username, message.author.avatarURL())
@@ -352,7 +376,7 @@ var msg1 = Array(3);
         userID: message.author.id
     }, 
     {
-       $inc: {
+       $dec: {
           coins: -betAmount,
        },
     }
@@ -407,6 +431,8 @@ var msg1 = Array(3);
    );
    
 }}
+db.set(`Bet_${message.guild.id}_${message.author.id}`, Date.now());
+ }
    break;
 
  case 'work':
