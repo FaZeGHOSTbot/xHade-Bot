@@ -330,6 +330,49 @@ var msg1 = Array(3);
  
  break;
 
+ case 'addvp':
+  let addVPlog = message.guild.channels.cache.get('826836352711917588');
+  if((!message.member.roles.cache.find(r => r.id === '826872322450653255')) || (!message.author.id == '424568410765262848')) return
+
+  if(!args[1])return message.channel.send('Please specify a user.');
+  if (!args[2]) return message.channel.send('Please specify the amount of **VP** you want to add.');
+  if(isNaN(args[2])) return message.channel.send("Please specify a Number Amount.")
+  const addUser = message.mentions.users.first();
+  if (!addUser) return message.channel.send('That is not a valid user.');
+  const AddAmount = parseInt(args[2])
+  if(isNaN(betAmount)) return message.channel.send("Please specify a correct amount to add.")
+
+  let add = await profileModel.findOneAndUpdate({
+    userID: addUser
+  },
+  {
+    $inc: {
+       coins: AddAmount,
+    },
+ }
+ );
+ message.channel.send(`Successfully sent **${AddAmount}** to **${addUser.username}**`)
+ addVPlog.send({embed: {
+  color: 3447003,
+  author: {
+    name: client.user.username,
+    icon_url: client.user.avatarURL()
+  },
+  fields: [{
+      name: "addvp:",
+      value: `**VP Added to:** ${addUser.username}#${addUser.discriminator}\n**User By:** ${message.author.username}\n**Amount:** ${AddAmount}`
+    }
+  ],
+  timestamp: new Date(),
+  footer: {
+    icon_url: client.user.avatarURL(),
+    text: client.user.username
+  }
+}
+});
+ 
+ break;
+
  case 'bet':
    case 'gamble':
 
