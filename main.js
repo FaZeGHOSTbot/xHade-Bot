@@ -362,7 +362,7 @@ var msg1 = Array(3);
   .setTitle(`Bad Day :(`)
   .setDescription(`Your luck ran out and you lost: \n**${betAmount} VP**`)
   .setColor(0xFF0000)  
-  .setFooter(`You have a 1/500th chance to win **3x VP**`, client.user.displayAvatarURL())
+  .setFooter(`You have a 1/500th chance to win 3x VP`, client.user.displayAvatarURL())
   .setTimestamp()
   message.channel.send(BetEmbed);
   }else if(randomNumberBet > 250 && randomNumberBet < 500){
@@ -378,9 +378,9 @@ var msg1 = Array(3);
   let BetEmbed = new Discord.MessageEmbed()
   .setAuthor(message.author.username, message.author.avatarURL())
   .setTitle(`Success! :)`)
-  .setDescription(`Luck was on you and you won ``2x VP``: \n**${betAmount*2} VP**`)
+  .setDescription(`Luck was on you and you won **2x VP**: \n**${betAmount*2} VP**`)
   .setColor(0x5CFF5C)  
-  .setFooter(`You have a 1/500th chance to win **3x VP**`, client.user.displayAvatarURL())
+  .setFooter(`You have a 1/500th chance to win 3x VP`, client.user.displayAvatarURL())
   .setTimestamp()
   message.channel.send(BetEmbed);
   } else if(randomNumberBet === 500){
@@ -396,7 +396,7 @@ var msg1 = Array(3);
   let BetEmbed = new Discord.MessageEmbed()
   .setAuthor(message.author.username, message.author.avatarURL())
   .setTitle(`CONGRATS! :O :)`)
-  .setDescription(`Damn! You pulled off a major heist in history and won ``3x VP``: \n**${betAmount*3} VP**`)
+  .setDescription(`Damn! You pulled off a major heist in history and won **3x VP**: \n**${betAmount*3} VP**`)
   .setColor(0xFFD700)  
   .setFooter('You are out **1/500th** winner!', client.user.displayAvatarURL())
   .setTimestamp()
