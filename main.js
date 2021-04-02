@@ -321,7 +321,7 @@ var msg1 = Array(3);
  
  break;
 
- case 'bet':
+ /*case 'bet':
    case 'gamble':
 
     const cooldownBet = await db.fetch(`Bet_${message.guild.id}_${message.author.id}`); 
@@ -438,7 +438,7 @@ var msg1 = Array(3);
 
 db.set(`Bet_${message.guild.id}_${message.author.id}`, Date.now());
  
-   break;
+   break;*/
 
  case 'work':
    const cooldownWork = await db.fetch(`Work_${message.guild.id}_${message.author.id}`); 
