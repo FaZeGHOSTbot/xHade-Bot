@@ -343,14 +343,14 @@ var msg1 = Array(3);
   if(isNaN(AddAmount)) return message.channel.send("Please specify a correct amount to add.")
 
   let add = await profileModel.findOneAndUpdate({
-    userID: addUser
-  },
-  {
-    $inc: {
-       coins: AddAmount,
-    },
- }
- );
+    userID: addUser.id
+}, 
+{
+   $inc: {
+      coins: AddAmount,
+   },
+}
+);
  message.channel.send(`Successfully sent **${AddAmount}** to **${addUser.username}**`)
  addVPlog.send({embed: {
   color: 3447003,
