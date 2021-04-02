@@ -372,7 +372,7 @@ var msg1 = Array(3);
     }
       const randomNumberBet = Math.floor(Math.random()*500) + 1;
       if(randomNumberBet <= 250){
-      let gamble = profileModel.findOneAndUpdate({
+       profileModel.findOneAndUpdate({
         userID: message.author.id
     }, 
     {
@@ -389,8 +389,9 @@ var msg1 = Array(3);
   .setFooter(`You have a 1/500th chance to win 5x VP`, client.user.displayAvatarURL())
   .setTimestamp()
   message.channel.send(BetEmbed);
-  }else if(randomNumberBet > 250 && randomNumberBet < 500){
-    let gamble = profileModel.findOneAndUpdate({
+  }
+  if(randomNumberBet > 250 && randomNumberBet < 500){
+     profileModel.findOneAndUpdate({
       userID: message.author.id
   }, 
   {
@@ -407,8 +408,9 @@ var msg1 = Array(3);
   .setFooter(`You have a 1/500th chance to win 5x VP`, client.user.displayAvatarURL())
   .setTimestamp()
   message.channel.send(BetEmbed);
-  } else if(randomNumberBet === 500){
-    let gamble = profileModel.findOneAndUpdate({
+  }
+   if(randomNumberBet === 500){
+    profileModel.findOneAndUpdate({
       userID: message.author.id
   }, 
   {
