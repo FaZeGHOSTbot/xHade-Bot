@@ -37,6 +37,7 @@ const timeoutWork = 3600000;
 const timeoutDaily = 86400000;
 const timeoutWeekly = 604800016;
 const timeoutMonthly = 2629800000;
+const timeoutPlay = 3600000;
 
 var fortunes = [
    "`Yes`",
@@ -240,11 +241,11 @@ var msg1 = Array(3);
  case 'daily':
    const cooldownDaily = await db.fetch(`Daily_${message.guild.id}_${message.author.id}`); 
    if (cooldownDaily !== null && timeoutDaily - (Date.now() - cooldownDaily) > 0) {
-		const time = ms(timeoutDaily - (Date.now() - cooldownDaily));
+		const timeDaily = ms(timeoutDaily - (Date.now() - cooldownDaily));
       let DailyCD = new Discord.MessageEmbed()
       .setAuthor(message.author.username, message.author.avatarURL())
       .setTitle('Daily Command Cooldown 🕒')
-      .setDescription(`You can use the command again in **${time}**! `)
+      .setDescription(`You can use the command again in **${timeDaily}**! `)
       .setColor(0xFF0000)  
       .setFooter(client.user.username, client.user.displayAvatarURL())
       .setTimestamp()
@@ -269,6 +270,43 @@ var msg1 = Array(3);
 
   db.set(`Daily_${message.guild.id}_${message.author.id}`, Date.now());
 }
+ break;
+
+ case 'play':
+  const cooldownPlay = await db.fetch(`Play_${message.guild.id}_${message.author.id}`); 
+  if (cooldownPlay !== null && timeoutPlay - (Date.now() - cooldownPlay) > 0) {
+   const timePlay = ms(timeoutPlay - (Date.now() - cooldownPlay));
+     let PlayCD = new Discord.MessageEmbed()
+     .setAuthor(message.author.username, message.author.avatarURL())
+     .setTitle('Play Command Cooldown 🕒')
+     .setDescription(`Take some rest! You can play Valorant again in **${timePlay}**! `)
+     .setColor(0xFF0000)  
+     .setFooter(client.user.username, client.user.displayAvatarURL())
+     .setTimestamp()
+   message.channel.send(PlayCD);
+ } else {
+  const randomNumberPlay = Math.floor(Math.random()*1000) + 1;
+  let Daily = await profileModel.findOneAndUpdate({
+     userID: message.author.id
+ }, 
+ {
+    $inc: {
+       coins: randomNumberPlay,
+    },
+ }
+ );
+ const PlayEmbed = new Discord.MessageEmbed()
+ .setAuthor(message.author.username, message.author.avatarURL())
+ .setDescription(`You Played Valorant for an hour and won: \n**${randomNumberPlay} VP**`)
+ .setColor('RANDOM')  
+ .setFooter(client.user.username, client.user.displayAvatarURL())
+ .setTimestamp()
+ message.channel.send(PlayEmbed);
+
+ db.set(`Play_${message.guild.id}_${message.author.id}`, Date.now());
+}
+ 
+ 
  break;
 
  case 'bet':
@@ -312,14 +350,14 @@ var msg1 = Array(3);
     }, 
     {
        $inc: {
-          coins: -randomNumberBet,
+          coins: -betAmount,
        },
     }
     );
     let BetEmbed = new Discord.MessageEmbed()
   .setAuthor(message.author.username, message.author.avatarURL())
   .setTitle(`Bad Day :(`)
-  .setDescription(`Your luck ran out and you lost: \n**${randomNumberbeg} VP**`)
+  .setDescription(`Your luck ran out and you lost: \n**${betAmount} VP**`)
   .setColor(0xFF0000)  
   .setFooter(client.user.username, client.user.displayAvatarURL())
   .setTimestamp()
@@ -330,14 +368,14 @@ var msg1 = Array(3);
   }, 
   {
      $inc: {
-        coins: randomNumberBet,
+        coins: betAmount,
      },
   }
   );
   let BetEmbed = new Discord.MessageEmbed()
   .setAuthor(message.author.username, message.author.avatarURL())
   .setTitle(`Success! :)`)
-  .setDescription(`Luck was on you and you won: \n**${randomNumberbeg} VP**`)
+  .setDescription(`Luck was on you and you won: \n**${betAmount} VP**`)
   .setColor(0x5CFF5C)  
   .setFooter(client.user.username, client.user.displayAvatarURL())
   .setTimestamp()
@@ -348,14 +386,14 @@ var msg1 = Array(3);
   }, 
   {
      $inc: {
-        coins: randomNumberBet*2,
+        coins: betAmount*2,
      },
   }
   );
   let BetEmbed = new Discord.MessageEmbed()
   .setAuthor(message.author.username, message.author.avatarURL())
   .setTitle(`CONGRATS! :O :)`)
-  .setDescription(`Damn! You pulled off a major heist in history and won: \n**${randomNumberbeg} VP**`)
+  .setDescription(`Damn! You pulled off a major heist in history and won: \n**${betAmount*2} VP**`)
   .setColor(0xFFD700)  
   .setFooter('You are out **1/500th** winner!', client.user.displayAvatarURL())
   .setTimestamp()
@@ -417,19 +455,18 @@ var msg1 = Array(3);
    .setTimestamp()
  message.channel.send(MonthlyCD);
   }else {
-    const randomNumberMonthly = Math.floor(Math.random()*30000) + 1;
     let Weekly = await profileModel.findOneAndUpdate({
       userID: message.author.id
   },
   {
     $inc: {
-      coins: randomNumberMonthly,
+      coins: 30000,
   },
 }
     );
     const MonthlyEmbed = new Discord.MessageEmbed()
     .setAuthor(message.author.username, message.author.avatarURL())
-    .setDescription(`You worked as a RIOT dev for a month and got \n**${randomNumberMonthly} VP**`)
+    .setDescription(`You worked as a RIOT dev for a month and got \n**30,000 VP**`)
     .setColor('RANDOM')  
     .setFooter(client.user.username, client.user.displayAvatarURL())
     .setTimestamp()
@@ -453,19 +490,18 @@ var msg1 = Array(3);
    .setTimestamp()
  message.channel.send(WeeklyCD);
   }else {
-    const randomNumberWeekly = Math.floor(Math.random()*5000) + 1;
     let Weekly = await profileModel.findOneAndUpdate({
       userID: message.author.id
   },
   {
     $inc: {
-      coins: randomNumberWeekly,
+      coins: 5000,
   },
 }
     );
     const WeeklyEmbed = new Discord.MessageEmbed()
     .setAuthor(message.author.username, message.author.avatarURL())
-    .setDescription(`You have worked hard for a week in RIOT and got \n**${randomNumberWeekly} VP**`)
+    .setDescription(`You have worked hard for a week in RIOT and got \n**5,000 VP**`)
     .setColor('RANDOM')  
     .setFooter(client.user.username, client.user.displayAvatarURL())
     .setTimestamp()
