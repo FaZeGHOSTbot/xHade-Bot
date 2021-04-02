@@ -292,8 +292,8 @@ var msg1 = Array(3);
     return message.channel.send(BetFail)
    }
    const betAmount = args[1]
-   const bet = profileModel.findOne({
-    userID = message.author.id
+   let bet = profileModel.findOne({
+    userID: message.author.id
  }, (err, bet) => {
     if(err) console.log(err);
     if (bet.coins < betAmount){
