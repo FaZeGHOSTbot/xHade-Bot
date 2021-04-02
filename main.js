@@ -357,7 +357,7 @@ var msg1 = Array(3);
 
     }
    
-   const bet = profileModel.findOne({
+   let bet = profileModel.findOne({
     userID: message.author.id
  }, (err, bet) => {
     if(err) console.log(err);
