@@ -347,12 +347,12 @@ var msg1 = Array(3);
   
    }
      const betAmount = parseInt(args[1])
-    if(Number.isNaN(betAmount)){
+    if(isNaN(betAmount)){
       let BetFail = new Discord.MessageEmbed()
       .setAuthor(message.author.username, message.author.avatarURL())
       .setDescription(`**${args[1]}** is an incorrect bet amount.`)
       .setColor(0xFF0000)  
-      .setFooter('You have a 1/500 chance to win **5x VP**', client.user.displayAvatarURL())
+      .setFooter('You have a 1/500 chance to win 5x VP', client.user.displayAvatarURL())
       return message.channel.send(BetFail)
 
     }
@@ -366,13 +366,13 @@ var msg1 = Array(3);
     .setAuthor(message.author.username, message.author.avatarURL())
     .setDescription(`You do not have **${betAmount} VP** to bet.`)
     .setColor(0xFF0000)  
-    .setFooter('You have a 1/500 chance to win **5x VP**', client.user.displayAvatarURL())
+    .setFooter('You have a 1/500 chance to win 5x VP', client.user.displayAvatarURL())
     .setTimestamp()
     return message.channel.send(BetFail)
     }
       const randomNumberBet = Math.floor(Math.random()*500) + 1;
       if(randomNumberBet <= 250){
-      let gamble = profileModel.findOneAndUpdate({
+      let gamble = await profileModel.findOneAndUpdate({
         userID: message.author.id
     }, 
     {
@@ -390,7 +390,7 @@ var msg1 = Array(3);
   .setTimestamp()
   message.channel.send(BetEmbed);
   }else if(randomNumberBet > 250 && randomNumberBet < 500){
-    let gamble = profileModel.findOneAndUpdate({
+    let gamble = await profileModel.findOneAndUpdate({
       userID: message.author.id
   }, 
   {
@@ -408,7 +408,7 @@ var msg1 = Array(3);
   .setTimestamp()
   message.channel.send(BetEmbed);
   } else if(randomNumberBet === 500){
-    let gamble = profileModel.findOneAndUpdate({
+    let gamble = await profileModel.findOneAndUpdate({
       userID: message.author.id
   }, 
   {
