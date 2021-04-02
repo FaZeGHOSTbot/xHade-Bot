@@ -104,7 +104,7 @@ client.on('ready',() =>{
 
         switch(argss)
         {
-          /*case "help":
+          case "help":
 
         try {
             message.reply("Please check your direct messages :inbox_tray:");
@@ -115,43 +115,52 @@ client.on('ready',() =>{
             color: 3447003,
             title: "Bot's commands",
             fields: [{
-                name: "⚙️ Moderation",
+                name: "⚙️ Moderation [Developing]",
                 value: 'ban , kick , softban , unban, mute, unmute'
               },
               {
                 name: "🎉 Fun",
-                value: 'meme, rps, ratewaifu, 8ball, advice, anime, dick, roll, urban, animesearch, notice, coinflip, quote, baka, dog'
+                value: 'meme, rps, 8ball, advice, dick, roll, urban, coinflip, quote, baka, videos'
               },
               {
-                name: "🎞 Gif",
+                name: "🎞 Gif [Developing]",
                 value: "pat, punch, stare, highfive, smile, handhold, kill, hug, cry, kiss, tickle, spank, poke"
               },
               {
+                name: "💰 Economy",
+                value: "work, play, beg, daily, weekly, monthly, bet/gamble, balance/bal,"
+              },
+              {
                 name: " 🛠 Admin",
-                value: "announce, botnick, uptime, dm, purge"
+                value: "announce, botnick, uptime, purge, "
               },
               {
                 name: "📊 Server",
-                value: "announce, avatar, server-suggest/ssugest, bot-suggest/bsuggest, poll, invite, calc/calculator, ping, issue, serverinfo, info, createticket, closeticket"
+                value: "announce, avatar, bot-suggest/bsuggest, poll, invite, calc/calculator, ping, issue, userinfo"
               },
               {
-               name: "🎊 Giveaway",
+               name: "🎊 Giveaway [Developing]",
                value: "giveaway-start, giveaway-reroll, giveaway-end"
+
+             },
+             {
+               name: "🤖 Bot Developer",
+               value: "shutdown, dm, eval"
 
              }
            ],
            timestamp: new Date(),
            footer: {
-             icon_url: client.user.avatarURL,
+             icon_url: client.user.avatarURL(),
              text: client.user.username
            }
          }
        });
        }
        catch(err) {
-           message.channel.send('I could not send you my commands!');
+           message.channel.send('I could not send you my commands! Maybe try enabling DMs');
        } 
-       break;*/
+       break;
      
        
        case 'purge':
@@ -818,7 +827,12 @@ case 'bal':
               }
             }
             else message.channel.send("Missing Admin perm!")
-              break;     
+              break;  
+              
+              case "invite":
+                 
+                  message.reply("Sorry but i only serve **xHade** :(");
+                  break;
 
          case 'shutdown': 
                 if (!message.author.id == '424568410765262848')
@@ -932,7 +946,26 @@ case 'bal':
            })
            break;
 
-           case 'hug':
+           case 'slap':
+            const slap = message.mentions.users.first();
+            if(!slap)
+                            return message.reply('Mention someone to slap!');
+              superagent.get("https://nekos.life/api/v2/img/slap")
+                .end((err, response) => {
+               const slapembed = new Discord.MessageEmbed() 
+               .setTitle(slap.username + " just got slapped by " + message.author.username) 
+               .setImage(response.body.url) 
+               .setColor('RANDOM') 
+               .setDescription((slap.toString() + " got slapped by " + message.author.toString()))
+               .setFooter(client.user.username, client.user.displayAvatarURL())
+               .setTimestamp()
+               .setURL(response.body.url);
+               message.channel.send(slapembed)
+              })
+              break;
+
+
+           case 'kiss':
          const kisser = message.mentions.users.first();
          if(!kisser)
                          return message.reply('Mention someone to kiss!');
@@ -983,6 +1016,24 @@ case 'bal':
             .setTimestamp()
             .setURL(response.body.url);
             message.channel.send(pokembed)
+           })
+           break;
+
+           case 'pat':
+         const pat = message.mentions.users.first();
+         if(!pat)
+                         return message.reply('Mention someone to pat!');
+           superagent.get("https://nekos.life/api/v2/img/pat")
+             .end((err, response) => {
+            const patmbed = new Discord.MessageEmbed() 
+            .setTitle(pat.username + " just got patted by " + message.author.username) 
+            .setImage(response.body.url) 
+            .setColor('RANDOM') 
+            .setDescription((pat.toString() + " got patted by " + message.author.toString()))
+            .setFooter(client.user.username, client.user.displayAvatarURL())
+            .setTimestamp()
+            .setURL(response.body.url);
+            message.channel.send(patmbed)
            })
            break;
 
