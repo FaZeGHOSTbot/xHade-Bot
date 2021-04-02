@@ -332,7 +332,7 @@ var msg1 = Array(3);
      .setTitle('Gamble Command Cooldown 🕒')
      .setDescription(`You can go into illegal Gambling in **${timeBet}**! `)
      .setColor(0xFF0000)  
-     .setFooter(client.user.username, client.user.displayAvatarURL())
+     .setFooter('You have a 1/500 chance to win **5x VP**', client.user.displayAvatarURL())
      .setTimestamp()
    return message.channel.send(BetCD);
  }
@@ -341,18 +341,18 @@ var msg1 = Array(3);
     .setAuthor(message.author.username, message.author.avatarURL())
     .setDescription(`You have to specify an amount to bet.`)
     .setColor(0xFF0000)  
-    .setFooter('You have a 1/500 chance to win **3x VP**', client.user.displayAvatarURL())
+    .setFooter('You have a 1/500 chance to win **5x VP**', client.user.displayAvatarURL())
     .setTimestamp()
     return message.channel.send(BetFail);
   
-   }else {
-     let betAmount = parseInt(args[1])
+   }
+     const betAmount = parseInt(args[1])
     if(Number.isNaN(betAmount)){
       let BetFail = new Discord.MessageEmbed()
       .setAuthor(message.author.username, message.author.avatarURL())
       .setDescription(`**${args[1]}** is an incorrect bet amount.`)
       .setColor(0xFF0000)  
-      .setFooter('You have a 1/500 chance to win **3x VP**', client.user.displayAvatarURL())
+      .setFooter('You have a 1/500 chance to win **5x VP**', client.user.displayAvatarURL())
       return message.channel.send(BetFail)
 
     }
@@ -366,10 +366,10 @@ var msg1 = Array(3);
     .setAuthor(message.author.username, message.author.avatarURL())
     .setDescription(`You do not have **${betAmount} VP** to bet.`)
     .setColor(0xFF0000)  
-    .setFooter('You have a 1/500 chance to win **3x VP**', client.user.displayAvatarURL())
+    .setFooter('You have a 1/500 chance to win **5x VP**', client.user.displayAvatarURL())
     .setTimestamp()
     return message.channel.send(BetFail)
-    } else{
+    }
       const randomNumberBet = Math.floor(Math.random()*500) + 1;
       if(randomNumberBet <= 250){
       let gamble = profileModel.findOneAndUpdate({
@@ -386,7 +386,7 @@ var msg1 = Array(3);
   .setTitle(`Bad Day :(`)
   .setDescription(`Your luck ran out and you lost: \n**${betAmount} VP**`)
   .setColor(0xFF0000)  
-  .setFooter(`You have a 1/500th chance to win 3x VP`, client.user.displayAvatarURL())
+  .setFooter(`You have a 1/500th chance to win 5x VP`, client.user.displayAvatarURL())
   .setTimestamp()
   message.channel.send(BetEmbed);
   }else if(randomNumberBet > 250 && randomNumberBet < 500){
@@ -404,7 +404,7 @@ var msg1 = Array(3);
   .setTitle(`Success! :)`)
   .setDescription(`Luck was on you and you won **2x VP**: \n**${betAmount*2} VP**`)
   .setColor(0x5CFF5C)  
-  .setFooter(`You have a 1/500th chance to win 3x VP`, client.user.displayAvatarURL())
+  .setFooter(`You have a 1/500th chance to win 5x VP`, client.user.displayAvatarURL())
   .setTimestamp()
   message.channel.send(BetEmbed);
   } else if(randomNumberBet === 500){
@@ -413,24 +413,24 @@ var msg1 = Array(3);
   }, 
   {
      $inc: {
-        coins: betAmount*2,
+        coins: betAmount*4,
      },
   }
   );
   let BetEmbed = new Discord.MessageEmbed()
   .setAuthor(message.author.username, message.author.avatarURL())
   .setTitle(`CONGRATS! :O :)`)
-  .setDescription(`Damn! You pulled off a major heist in history and won **3x VP**: \n**${betAmount*3} VP**`)
+  .setDescription(`Damn! You pulled off a major heist in history and won **5x VP**: \n**${betAmount*5} VP**`)
   .setColor(0xFFD700)  
   .setFooter('You are out **1/500th** winner!', client.user.displayAvatarURL())
   .setTimestamp()
   message.channel.send(BetEmbed);
   }
-    }
+    
  }
    );
    
-}
+
 db.set(`Bet_${message.guild.id}_${message.author.id}`, Date.now());
  
    break;
