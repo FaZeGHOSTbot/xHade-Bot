@@ -321,10 +321,10 @@ var msg1 = Array(3);
     .setTimestamp()
     return message.channel.send(BetFail);
   
-   }else if(!isNaN(args[1])) {
+   }else if(isInt(args[1])) {
     let BetFail = new Discord.MessageEmbed()
     .setAuthor(message.author.username, message.author.avatarURL())
-    .setDescription(`**${args[1]} is an incorrect bet amount.`)
+    .setDescription(`**${args[1]}** is an incorrect bet amount.`)
     .setColor(0xFF0000)  
     .setFooter('You have a 1/500 chance to win **3x VP**', client.user.displayAvatarURL())
     return message.channel.send(BetFail)
