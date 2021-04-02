@@ -334,8 +334,8 @@ var msg1 = Array(3);
      .setColor(0xFF0000)  
      .setFooter(client.user.username, client.user.displayAvatarURL())
      .setTimestamp()
-   message.channel.send(BetCD);
- } else {
+   return message.channel.send(BetCD);
+ }
    if(!args[1]) {
     let BetFail = new Discord.MessageEmbed()
     .setAuthor(message.author.username, message.author.avatarURL())
@@ -345,7 +345,7 @@ var msg1 = Array(3);
     .setTimestamp()
     return message.channel.send(BetFail);
   
-   }else if((args[1])) {
+   }else {
      let betAmount = parseInt(args[1])
     if(Number.isNaN(betAmount)){
       let BetFail = new Discord.MessageEmbed()
@@ -355,9 +355,9 @@ var msg1 = Array(3);
       .setFooter('You have a 1/500 chance to win **3x VP**', client.user.displayAvatarURL())
       return message.channel.send(BetFail)
 
-    }else{
+    }
    
-   let bet = profileModel.findOne({
+   const bet = profileModel.findOne({
     userID: message.author.id
  }, (err, bet) => {
     if(err) console.log(err);
@@ -430,9 +430,9 @@ var msg1 = Array(3);
  }
    );
    
-}}
+}
 db.set(`Bet_${message.guild.id}_${message.author.id}`, Date.now());
- }
+ 
    break;
 
  case 'work':
