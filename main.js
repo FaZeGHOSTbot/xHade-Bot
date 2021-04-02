@@ -113,7 +113,7 @@ client.on('ready',() =>{
 
             message.author.send({embed: {
             color: 3447003,
-            title: "Bot's commands",
+            title: "xHadeinator's commands",
             fields: [{
                 name: "⚙️ Moderation [Developing]",
                 value: 'ban , kick , softban , unban, mute, unmute'
@@ -762,7 +762,7 @@ case 'bal':
 
               case 'dm':
                         let mention1 = message.mentions.users.first();
-                        if((message.member.roles.cache.find(r => r.id === 826872322450653255)) || (message.author.id == '424568410765262848')) {
+                        if((message.member.roles.cache.find(r => r.id === '826872322450653255')) || (message.author.id == '424568410765262848')) {
                         if (!mention1){
                           message.channel.send("Mention an user to DM.")
                          break;
@@ -775,7 +775,7 @@ case 'bal':
                         mention1.send(msgArgs3) 
                         message.channel.send("Message sent to user!✅")
                         }
-                        else return message.channel.send("You are not allowed to use this command.")
+                        else return 
                         break;    
                         
                         case 'poll':
@@ -835,12 +835,13 @@ case 'bal':
                   break;
 
          case 'shutdown': 
-                if (!message.author.id == '424568410765262848')
-                  return;
+         if((message.member.roles.cache.find(r => r.id === '826872322450653255')) || (message.author.id == '424568410765262848')) {
+                  
           
                 message.channel.send('Shutting down...').then(m => {
                   client.destroy();
                 });
+              }else return
                 break; 
 
                 case 'userinfo':
@@ -881,7 +882,7 @@ case 'bal':
                 break;
 
                 case "eval":
-              if (!message.author.id == '424568410765262848') return message.channel.send("You can't use this command!")
+              if((!message.member.roles.cache.find(r => r.id === '826872322450653255')) || (!message.author.id == '424568410765262848')) return 
         const clean = text => {
             if (typeof(text) === "string")
               return text.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
