@@ -35,6 +35,8 @@ const { profile } = require('console');
 const timeoutBeg = 3600000;
 const timeoutWork = 3600000;
 const timeoutDaily = 86400000;
+const timeoutWeekly = 604800016;
+const timeoutMonthly = 2629800000;
 
 var fortunes = [
    "`Yes`",
@@ -269,20 +271,117 @@ var msg1 = Array(3);
 }
  break;
 
+ case 'bet':
+   case 'gamble':
+
+   if(!args[1]) {
+    let BetFail = new Discord.MessageEmbed()
+    .setAuthor(message.author.username, message.author.avatarURL())
+    .setDescription(`You have to specify an amount to bet.`)
+    .setColor(0xFF0000)  
+    .setFooter('You have a 1/500 chance to win **3x VP**', client.user.displayAvatarURL())
+    .setTimestamp()
+    return message.channel.send(BetFail);
+  
+   }else if(!isNaN(args[1])) {
+    let BetFail = new Discord.MessageEmbed()
+    .setAuthor(message.author.username, message.author.avatarURL())
+    .setDescription(`**${args[1]} is an incorrect bet amount.`)
+    .setColor(0xFF0000)  
+    .setFooter('You have a 1/500 chance to win **3x VP**', client.user.displayAvatarURL())
+    return message.channel.send(BetFail)
+   }
+   const betAmount = args[1]
+   const bet = profileModel.findOne({
+    userID = message.author.id
+ }, (err, bet) => {
+    if(err) console.log(err);
+    if (bet.coins < betAmount){
+      let BetFail = new Discord.MessageEmbed()
+    .setAuthor(message.author.username, message.author.avatarURL())
+    .setDescription(`You do not have **${betAmount} VP** to bet.`)
+    .setColor(0xFF0000)  
+    .setFooter('You have a 1/500 chance to win **3x VP**', client.user.displayAvatarURL())
+    .setTimestamp()
+    return message.channel.send(BetFail)
+    } else{
+      const randomNumberBet = Math.floor(Math.random()*500) + 1;
+      if(randomNumberBet <= 250){
+      let gamble = await profileModel.findOneAndUpdate({
+        userID: message.author.id
+    }, 
+    {
+       $inc: {
+          coins: -randomNumberBet,
+       },
+    }
+    );
+    let BetEmbed = new Discord.MessageEmbed()
+  .setAuthor(message.author.username, message.author.avatarURL())
+  .setTitle(`Bad Day :(`)
+  .setDescription(`Your luck ran out and you lost: \n**${randomNumberbeg} VP**`)
+  .setColor(0xFF0000)  
+  .setFooter(client.user.username, client.user.displayAvatarURL())
+  .setTimestamp()
+  message.channel.send(BetEmbed);
+  }else if(randomNumberBet > 250 && randomNumberBet < 500){
+    let gamble = await profileModel.findOneAndUpdate({
+      userID: message.author.id
+  }, 
+  {
+     $inc: {
+        coins: randomNumberBet,
+     },
+  }
+  );
+  let BetEmbed = new Discord.MessageEmbed()
+  .setAuthor(message.author.username, message.author.avatarURL())
+  .setTitle(`Success! :)`)
+  .setDescription(`Luck was on you and you won: \n**${randomNumberbeg} VP**`)
+  .setColor(0x5CFF5C)  
+  .setFooter(client.user.username, client.user.displayAvatarURL())
+  .setTimestamp()
+  message.channel.send(BetEmbed);
+  } else if(randomNumberBet === 500){
+    let gamble = await profileModel.findOneAndUpdate({
+      userID: message.author.id
+  }, 
+  {
+     $inc: {
+        coins: randomNumberBet*2,
+     },
+  }
+  );
+  let BetEmbed = new Discord.MessageEmbed()
+  .setAuthor(message.author.username, message.author.avatarURL())
+  .setTitle(`CONGRATS! :O :)`)
+  .setDescription(`Damn! You pulled off a major heist in history and won: \n**${randomNumberbeg} VP**`)
+  .setColor(0xFFD700)  
+  .setFooter('You are out **1/500th** winner!', client.user.displayAvatarURL())
+  .setTimestamp()
+  message.channel.send(BetEmbed);
+  }
+    }
+ }
+   );
+   
+   
+   break;
+
  case 'work':
    const cooldownWork = await db.fetch(`Work_${message.guild.id}_${message.author.id}`); 
    if (cooldownWork !== null && timeoutWork - (Date.now() - cooldownWork) > 0) {
-		const time = ms(timeoutWork - (Date.now() - cooldownWork));
+		const timeWork = ms(timeoutWork - (Date.now() - cooldownWork));
       let WorkCD = new Discord.MessageEmbed()
       .setAuthor(message.author.username, message.author.avatarURL())
       .setTitle('Work Command Cooldown 🕒')
-      .setDescription(`You can use the command again in **${time}**! `)
+      .setDescription(`You can use the command again in **${timeWork}**! `)
       .setColor(0xFF0000)  
       .setFooter(client.user.username, client.user.displayAvatarURL())
       .setTimestamp()
 		message.channel.send(WorkCD);
 	} else {
-      const randomNumberWork = Math.floor(Math.random()*500) + 1;
+      const randomNumberWork = Math.floor(Math.random()*700) + 1;
     let Work = await profileModel.findOneAndUpdate({
       userID: message.author.id
   }, 
@@ -304,20 +403,93 @@ var msg1 = Array(3);
 }
  break; 
 
+
+ case 'monthly':
+  const cooldownMonthly = await db.fetch(`Monthly_${message.guild.id}_${message.author.id}`); 
+  if (cooldownMonthly !== null && timeoutMonthly - (Date.now() - cooldownMonthly) > 0) {
+   const timeMonthly = ms(timeoutMonthly - (Date.now() - cooldownMonthly));
+   let MonthlyCD = new Discord.MessageEmbed()
+   .setAuthor(message.author.username, message.author.avatarURL())
+   .setTitle('Monthly Command Cooldown 🕒')
+   .setDescription(`You can use the command again in **${timeMonthly}**! `)
+   .setColor(0xFF0000)  
+   .setFooter(client.user.username, client.user.displayAvatarURL())
+   .setTimestamp()
+ message.channel.send(MonthlyCD);
+  }else {
+    const randomNumberMonthly = Math.floor(Math.random()*30000) + 1;
+    let Weekly = await profileModel.findOneAndUpdate({
+      userID: message.author.id
+  },
+  {
+    $inc: {
+      coins: randomNumberMonthly,
+  },
+}
+    );
+    const MonthlyEmbed = new Discord.MessageEmbed()
+    .setAuthor(message.author.username, message.author.avatarURL())
+    .setDescription(`You worked as a RIOT dev for a month and got \n**${randomNumberMonthly} VP**`)
+    .setColor('RANDOM')  
+    .setFooter(client.user.username, client.user.displayAvatarURL())
+    .setTimestamp()
+    message.channel.send(MonthlyEmbed);
+  
+    db.set(`Monthly_${message.guild.id}_${message.author.id}`, Date.now());
+  }
+ break;
+
+
+ case 'weekly':
+  const cooldownWeekly = await db.fetch(`Weekly_${message.guild.id}_${message.author.id}`); 
+  if (cooldownWeekly !== null && timeoutWeekly - (Date.now() - cooldownWeekly) > 0) {
+   const timeWeekly = ms(timeoutWeekly - (Date.now() - cooldownWeekly));
+   let WeeklyCD = new Discord.MessageEmbed()
+   .setAuthor(message.author.username, message.author.avatarURL())
+   .setTitle('Weekly Command Cooldown 🕒')
+   .setDescription(`You can use the command again in **${timeWeekly}**! `)
+   .setColor(0xFF0000)  
+   .setFooter(client.user.username, client.user.displayAvatarURL())
+   .setTimestamp()
+ message.channel.send(WeeklyCD);
+  }else {
+    const randomNumberWeekly = Math.floor(Math.random()*5000) + 1;
+    let Weekly = await profileModel.findOneAndUpdate({
+      userID: message.author.id
+  },
+  {
+    $inc: {
+      coins: randomNumberWeekly,
+  },
+}
+    );
+    const WeeklyEmbed = new Discord.MessageEmbed()
+    .setAuthor(message.author.username, message.author.avatarURL())
+    .setDescription(`You have worked hard for a week in RIOT and got \n**${randomNumberWeekly} VP**`)
+    .setColor('RANDOM')  
+    .setFooter(client.user.username, client.user.displayAvatarURL())
+    .setTimestamp()
+    message.channel.send(WeeklyEmbed);
+  
+    db.set(`Weekly_${message.guild.id}_${message.author.id}`, Date.now());
+  }
+
+ break;
+
  case 'beg':
    const cooldownBeg = await db.fetch(`Beg_${message.guild.id}_${message.author.id}`); 
    if (cooldownBeg !== null && timeoutBeg - (Date.now() - cooldownBeg) > 0) {
-		const time = ms(timeoutBeg - (Date.now() - cooldownBeg));
+		const timeBeg = ms(timeoutBeg - (Date.now() - cooldownBeg));
       let BegCD = new Discord.MessageEmbed()
       .setAuthor(message.author.username, message.author.avatarURL())
       .setTitle('Beg Command Cooldown 🕒')
-      .setDescription(`You can use the command again in **${time}**! `)
+      .setDescription(`You can use the command again in **${timeBeg}**! `)
       .setColor(0xFF0000)  
       .setFooter(client.user.username, client.user.displayAvatarURL())
       .setTimestamp()
 		message.channel.send(BegCD);
 	} else {
-    const randomNumberbeg = Math.floor(Math.random()*100) + 1;
+    const randomNumberbeg = Math.floor(Math.random()*200) + 1;
     let beg = await profileModel.findOneAndUpdate({
       userID: message.author.id
   }, 
@@ -414,7 +586,7 @@ case 'poke':
             .setImage(response.body.url)
             .setColor(`RANDOM`)
             .setDescription((pokeuser.toString() + " got poked by " + message.author.toString()))
-            .setFooter(bot.user.username, bot.user.avatarURL())
+            .setFooter(client.user.username, client.user.avatarURL())
             .setTimestamp()
             .setURL(response.body.url);
         message.channel.send(pokeEmbed);
