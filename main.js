@@ -384,8 +384,8 @@ var msg1 = Array(3);
         userID: message.author.id
     }, 
     {
-       $dec: {
-          coins: betAmount,
+       $inc: {
+          coins: -betAmount,
        },
     }
     );
