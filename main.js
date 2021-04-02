@@ -372,7 +372,8 @@ var msg1 = Array(3);
     }
       const randomNumberBet = Math.floor(Math.random()*500) + 1;
       if(randomNumberBet <= 250){
-       profileModel.findOneAndUpdate({
+        const profileModel1 = require("./models/profileSchema");
+       profileModel1.findOneAndUpdate({
         userID: message.author.id
     }, 
     {
@@ -391,7 +392,8 @@ var msg1 = Array(3);
   message.channel.send(BetEmbed);
   }
   if(randomNumberBet > 250 && randomNumberBet < 500){
-     profileModel.findOneAndUpdate({
+    const profileModel2 = require("./models/profileSchema");
+     profileModel2.findOneAndUpdate({
       userID: message.author.id
   }, 
   {
@@ -410,7 +412,8 @@ var msg1 = Array(3);
   message.channel.send(BetEmbed);
   }
    if(randomNumberBet === 500){
-    profileModel.findOneAndUpdate({
+    const profileModel3 = require("./models/profileSchema");
+    profileModel3.findOneAndUpdate({
       userID: message.author.id
   }, 
   {
