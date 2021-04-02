@@ -321,7 +321,7 @@ var msg1 = Array(3);
  
  break;
 
- /*case 'bet':
+ case 'bet':
    case 'gamble':
 
     const cooldownBet = await db.fetch(`Bet_${message.guild.id}_${message.author.id}`); 
@@ -344,8 +344,9 @@ var msg1 = Array(3);
     .setFooter('You have a 1/500 chance to win **5x VP**', client.user.displayAvatarURL())
     .setTimestamp()
     return message.channel.send(BetFail);
-  
-   }
+  }
+
+
      const betAmount = parseInt(args[1])
     if(isNaN(betAmount)){
       let BetFail = new Discord.MessageEmbed()
@@ -354,14 +355,18 @@ var msg1 = Array(3);
       .setColor(0xFF0000)  
       .setFooter('You have a 1/500 chance to win 5x VP', client.user.displayAvatarURL())
       return message.channel.send(BetFail)
-
-    }
-   
+  }
+ 
+  
    let bet = profileModel.findOne({
+
     userID: message.author.id
- }, (err, bet) => {
+
+ }, async (err, bet) => {
     if(err) console.log(err);
+
     if (bet.coins < betAmount){
+
       let BetFail = new Discord.MessageEmbed()
     .setAuthor(message.author.username, message.author.avatarURL())
     .setDescription(`You do not have **${betAmount} VP** to bet.`)
@@ -370,15 +375,17 @@ var msg1 = Array(3);
     .setTimestamp()
     return message.channel.send(BetFail)
     }
+
+
       const randomNumberBet = Math.floor(Math.random()*500) + 1;
       if(randomNumberBet <= 250){
-        const profileModel1 = require("./models/profileSchema");
-       profileModel1.findOneAndUpdate({
+        
+       let gamble = await profileModel.findOneAndUpdate({
         userID: message.author.id
     }, 
     {
-       $inc: {
-          coins: -betAmount,
+       $dec: {
+          coins: betAmount,
        },
     }
     );
@@ -391,9 +398,11 @@ var msg1 = Array(3);
   .setTimestamp()
   message.channel.send(BetEmbed);
   }
+
+
   if(randomNumberBet > 250 && randomNumberBet < 500){
-    const profileModel2 = require("./models/profileSchema");
-     profileModel2.findOneAndUpdate({
+    
+     let gamble = await profileModel.findOneAndUpdate({
       userID: message.author.id
   }, 
   {
@@ -411,9 +420,11 @@ var msg1 = Array(3);
   .setTimestamp()
   message.channel.send(BetEmbed);
   }
+
+
    if(randomNumberBet === 500){
-    const profileModel3 = require("./models/profileSchema");
-    profileModel3.findOneAndUpdate({
+    
+    let gamble = await profileModel.findOneAndUpdate({
       userID: message.author.id
   }, 
   {
@@ -438,7 +449,7 @@ var msg1 = Array(3);
 
 db.set(`Bet_${message.guild.id}_${message.author.id}`, Date.now());
  
-   break;*/
+   break;
 
  case 'work':
    const cooldownWork = await db.fetch(`Work_${message.guild.id}_${message.author.id}`); 
